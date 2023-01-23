@@ -5,45 +5,37 @@ let wakeLock = null;
 const requestWakeLock = async () => {
   try {
     wakeLock = await navigator.wakeLock.request();
-    wakeLock.addEventListener("release", () => {
-      console.log("Screen Wake Lock released:", wakeLock.released);
-    });
-    console.log("Screen Wake Lock released:", wakeLock.released);
+    if(!wakeLock.released) {
+      showAlert("success", "Screen wake is active.");
+    }
   } catch (err) {
-    console.error(`${err.name}, ${err.message}`);
+    showAlert("error", `${err.name}, ${err.message}`);
   }
 };
 
+//Re-call wakelock when visibility changes.
 const handleVisibilityChange = async () => {
   if (wakeLock !== null && document.visibilityState === "visible") {
     await requestWakeLock();
   }
 };
 
-const show = document.getElementById('show');
-
+//Get alert-box from document.
 const alertBox = document.getElementsByClassName('alert')[0];
 
-
+//Alert-box functionality.
 function showAlert(type, message) {
-	if (type === "info") {
-		alertBox.innerHTML = createMessage("Info", message)
-	}
+  alertBox.innerHTML = `<svg role="img" class="alert-icon"><use xlink:href="#svgsprite-icon-${type}"></use></svg><span class="alert-message">${message}</span>`
 	alertBox.classList.add("show");
 	alertBox.classList.add(type);
 	window.setTimeout( ()=> {
 		alertBox.classList.remove("show");
+    alertBox.classList.remove(type);
 	}, 5000)
 }
 
-function createMessage(title, message) {
-	return (
-		`<span class="alert-title">${title}</span>
-		<span class="alert-message">${message}</span>`
-	)
-}
-
-show.addEventListener('click', function() { showAlert("info", "Hi")});
-
+//Request wakeLock on page load.
 window.addEventListener("load", requestWakeLock);
+
+//Re-acquire wakeLock when page comes back to visibility.
 document.addEventListener("visibilitychange", handleVisibilityChange);
