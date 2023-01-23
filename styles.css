@@ -1,15 +1,82 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    background: #121212;
+}
+
+main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .alert {
     display: none;
-    background: #91e0a2;
     width: 400px;
     text-align: center;
     position: absolute;
-    top: 5%;
     left: 50%;
     transform: translateX(-50%);
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6px 16px;
+    border-radius: 4px;
+    animation: slide 400ms;
+    transition: all;
 }
 
 .alert.show {
-    display: block;
+    display: flex;
 }
 
+.alert-icon {
+    width: 35px;
+    margin-right: 12px;
+    height: 25px;
+    position: relative;
+    padding: 7px 0;
+}
+
+.alert-message {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.alert.success {
+    background: #edf7ed;
+}
+
+.success .alert-message {
+    color: #1e4620;
+}
+
+.alert.error {
+    background: #fdeded;
+}
+
+.error .alert-message {
+    color: #5f2120;
+}
+
+.typography {
+    font-family: 'Anton', sans-serif;
+    font-size: 100px;
+    color: darkgray;
+}
+
+
+@keyframes slide {
+    0% {
+        translate: 0 -100%;
+    }
+    
+    100% {
+        translate: 0 0;
+    }
+}
